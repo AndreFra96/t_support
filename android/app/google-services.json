@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "630870521105",
+    "project_id": "rca-t-support",
+    "storage_bucket": "rca-t-support.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630870521105:android:8e9a81ef61e5262ad308b0",
+        "android_client_info": {
+          "package_name": "com.example.support"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630870521105-kn5joki46op13gppnlb1ud3dt1dqvgfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWfM_y84On6_ZqyFBGa5e1D1mTkOwxdYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630870521105-kn5joki46op13gppnlb1ud3dt1dqvgfk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630870521105:android:406611aaee46986bd308b0",
+        "android_client_info": {
+          "package_name": "it.rcamilano.tsupport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630870521105-kn5joki46op13gppnlb1ud3dt1dqvgfk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWfM_y84On6_ZqyFBGa5e1D1mTkOwxdYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630870521105-kn5joki46op13gppnlb1ud3dt1dqvgfk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
