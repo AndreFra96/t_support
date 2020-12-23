@@ -12,13 +12,15 @@ class RenewBlock extends StatelessWidget {
       @required this.user,
       @required this.future,
       @required this.title,
-      @required this.icon})
+      @required this.icon,
+      this.showIfZero = true})
       : super(key: key);
 
   final RcaUser user;
   final Future<List<RcaArticle>> future;
   final String title;
   final Icon icon;
+  final bool showIfZero;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class RenewBlock extends StatelessWidget {
           List<RcaArticle> articles = snapshot.data;
           print(articles);
           double blockTotal = RcaArticle.calculateTotal(articles);
-          if (articles.length > 0) {
+          if (articles.length > 0 || showIfZero) {
             return Column(children: [
               Material(
                 child: Container(
@@ -45,15 +47,22 @@ class RenewBlock extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          BorderedIcon(
-                            icon: icon,
-                            width: 35,
-                            height: 35,
-                          ),
-                          Text(
-                            title,
-                            style: TextStyle(fontSize: 18),
-                            overflow: TextOverflow.ellipsis,
+                          Row(
+                            children: [
+                              BorderedIcon(
+                                icon: icon,
+                                width: 35,
+                                height: 35,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  title,
+                                  style: TextStyle(fontSize: 18),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                           Text("  " + blockTotal.toString() + " € ")
                         ],

@@ -97,7 +97,7 @@ class RcaUser extends ChangeNotifier {
   Future<List<RcaArticle>> rinnoviAnnuali() async {
     Response r = await HTTPservice.rinnoviAnnuali(userCode, activeLocationID);
     dynamic body = jsonDecode(r.body);
-    List<RcaArticle> articles = new List<RcaArticle>();
+    List<RcaArticle> articles = [];
     for (int i = 0; i < body.length; i++) {
       articles.add(RcaArticle(
           title: body[i]['article_app_title'] == null
@@ -110,6 +110,10 @@ class RcaUser extends ChangeNotifier {
               ? "Rinnovo"
               : body[i]['date_rinnovo'],
           price: body[i]['price'] == null ? "Prezzo" : body[i]['price'],
+          description: body[i]['article_loc_desc'] == null ||
+                  body[i]['article_loc_desc'] == ""
+              ? "Descrizione non presente"
+              : body[i]['article_loc_desc'],
           imgPath: body[i]['article_immagine'] == null
               ? "pathNotFound"
               : body[i]['article_immagine'].replaceAll("../", "")));
@@ -120,7 +124,7 @@ class RcaUser extends ChangeNotifier {
   Future<List<RcaArticle>> rinnoviMensili() async {
     Response r = await HTTPservice.rinnoviMensili(userCode, activeLocationID);
     dynamic body = jsonDecode(r.body);
-    List<RcaArticle> articles = new List<RcaArticle>();
+    List<RcaArticle> articles = [];
     for (int i = 0; i < body.length; i++) {
       articles.add(RcaArticle(
           title: body[i]['article_app_title'] == null
@@ -133,6 +137,10 @@ class RcaUser extends ChangeNotifier {
               ? "Rinnovo"
               : body[i]['date_rinnovo'],
           price: body[i]['price'] == null ? "Prezzo" : body[i]['price'],
+          description: body[i]['article_loc_desc'] == null ||
+                  body[i]['article_loc_desc'] == ""
+              ? "Descrizione non presente"
+              : body[i]['article_loc_desc'],
           imgPath: body[i]['article_immagine'] == null
               ? "pathNotFound"
               : body[i]['article_immagine'].replaceAll("../", "")));
@@ -143,7 +151,7 @@ class RcaUser extends ChangeNotifier {
   Future<List<RcaArticle>> rinnoviBiennali() async {
     Response r = await HTTPservice.rinnoviBiennali(userCode, activeLocationID);
     dynamic body = jsonDecode(r.body);
-    List<RcaArticle> articles = new List<RcaArticle>();
+    List<RcaArticle> articles = [];
     for (int i = 0; i < body.length; i++) {
       articles.add(RcaArticle(
           title: body[i]['article_app_title'] == null
@@ -156,6 +164,10 @@ class RcaUser extends ChangeNotifier {
               ? "Rinnovo"
               : body[i]['date_rinnovo'],
           price: body[i]['price'] == null ? "Prezzo" : body[i]['price'],
+          description: body[i]['article_loc_desc'] == null ||
+                  body[i]['article_loc_desc'] == ""
+              ? "Descrizione non presente"
+              : body[i]['article_loc_desc'],
           imgPath: body[i]['article_immagine'] == null
               ? "pathNotFound"
               : body[i]['article_immagine'].replaceAll("../", "")));
@@ -166,7 +178,7 @@ class RcaUser extends ChangeNotifier {
   Future<List<RcaArticle>> rinnoviNewYear() async {
     Response r = await HTTPservice.rinnoviNewYear(userCode, activeLocationID);
     dynamic body = jsonDecode(r.body);
-    List<RcaArticle> articles = new List<RcaArticle>();
+    List<RcaArticle> articles = [];
     for (int i = 0; i < body.length; i++) {
       articles.add(RcaArticle(
           title: body[i]['article_app_title'] == null
@@ -179,6 +191,10 @@ class RcaUser extends ChangeNotifier {
               ? "Rinnovo"
               : body[i]['date_rinnovo'],
           price: body[i]['price'] == null ? "Prezzo" : body[i]['price'],
+          description: body[i]['article_loc_desc'] == null ||
+                  body[i]['article_loc_desc'] == ""
+              ? "Descrizione non presente"
+              : body[i]['article_loc_desc'],
           imgPath: body[i]['article_immagine'] == null
               ? "pathNotFound"
               : body[i]['article_immagine'].replaceAll("../", "")));
@@ -190,7 +206,7 @@ class RcaUser extends ChangeNotifier {
     Response r =
         await HTTPservice.rinnoviPrestitiAnnuali(userCode, activeLocationID);
     dynamic body = jsonDecode(r.body);
-    List<RcaArticle> articles = new List<RcaArticle>();
+    List<RcaArticle> articles = [];
     for (int i = 0; i < body.length; i++) {
       articles.add(RcaArticle(
           title: body[i]['article_app_title'] == null
@@ -203,6 +219,10 @@ class RcaUser extends ChangeNotifier {
               ? "Rinnovo"
               : body[i]['date_rinnovo'],
           price: body[i]['price'] == null ? "Prezzo" : body[i]['price'],
+          description: body[i]['article_loc_desc'] == null ||
+                  body[i]['article_loc_desc'] == ""
+              ? "Descrizione non presente"
+              : body[i]['article_loc_desc'],
           imgPath: body[i]['article_immagine'] == null
               ? "pathNotFound"
               : body[i]['article_immagine'].replaceAll("../", "")));

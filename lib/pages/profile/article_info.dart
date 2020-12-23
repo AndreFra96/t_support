@@ -1,6 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:support/models/rca_article.dart';
+import 'package:support/pages/common/errorHandledImage.dart';
 import 'package:support/tools/tools.dart';
 
 class ArticleInfo extends StatelessWidget {
@@ -8,29 +9,67 @@ class ArticleInfo extends StatelessWidget {
   ArticleInfo({@required this.article});
   @override
   Widget build(BuildContext context) {
-    print("https://www.rca-ordini.cloud/SITO/prev/" + article.imgPath);
     return GestureDetector(
-      onTap: () => {print("tap")},
-      child: Row(
-        children: [
-          Container(
-            width: 60.0,
-            height: 60.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              // border: Border.all(color: Colors.grey[300]),
+      behavior: HitTestBehavior.translucent,
+      onTap: () => {
+        showCupertinoDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (BuildContext context) => CupertinoAlertDialog(
+            title: SizedBox(
+              width: 100,
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ErrorHandledImage(
+                  link: "https://rca-ordini.cloud/SITO/" + article.imgPath,
+                  height: 80,
+                  width: 80,
+                  replace: Icon(Icons.error),
+                ),
+              ),
             ),
-            child: CachedNetworkImage(
-              // imageUrl: "https://rca-ordini.cloud/SITO/" + article.imgPath,
-              imageUrl:
-                  "https://rca-ordini.cloud/SITO/uploads/logo-cassaincloud.png",
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+            content: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child: Text(
+                    article.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                ),
+                Text(article.description),
+              ],
             ),
+            // actions: <Widget>[
+            //   CupertinoDialogAction(
+            //     onPressed: () => {Navigator.of(context).pop()},
+            //     isDefaultAction: true,
+            //     child: Text("Chiudi"),
+            //   ),
+            // ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+        ),
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          children: [
+            Container(
+              width: 60.0,
+              height: 60.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                // border: Border.all(color: Colors.grey[300]),
+              ),
+              child: ErrorHandledImage(
+                link: "https://rca-ordini.cloud/SITO/" + article.imgPath,
+                height: 80,
+                width: 80,
+                replace: Icon(Icons.error),
+              ),
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -59,8 +98,8 @@ class ArticleInfo extends StatelessWidget {
                 ),
               ],
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

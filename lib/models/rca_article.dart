@@ -6,13 +6,15 @@ class RcaArticle {
   final String renew;
   final String price;
   final String imgPath;
+  final String description;
 
   RcaArticle(
       {@required this.title,
       @required this.articleID,
       @required this.renew,
       @required this.price,
-      @required this.imgPath});
+      @required this.imgPath,
+      @required this.description});
 
   @override
   String toString() {
@@ -24,6 +26,8 @@ class RcaArticle {
         this.renew +
         "\n" +
         this.price +
+        "\n" +
+        this.description +
         "\n";
     return result;
   }
@@ -42,7 +46,8 @@ class RcaArticle {
         title: map['title'],
         renew: map['renew'],
         price: map['price'],
-        imgPath: map['imgPath']);
+        imgPath: map['imgPath'],
+        description: map['description']);
   }
 
   Map<String, dynamic> toMap() {
@@ -51,7 +56,8 @@ class RcaArticle {
       'articleID': articleID,
       'renew': renew,
       'price': price,
-      'imgPath': imgPath
+      'imgPath': imgPath,
+      'description': description
     };
   }
 
