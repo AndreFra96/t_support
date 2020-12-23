@@ -28,12 +28,15 @@ class Index extends StatelessWidget {
         home: CupertinoTabScaffold(
           tabBar: CupertinoTabBar(
             items: [
-              BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.chat_bubble), label: "Chat"),
-              BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.news), label: "News"),
-              BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.person), label: "Profilo")
+              BottomNavigationBarItem(icon: Icon(CupertinoIcons.chat_bubble)),
+              BottomNavigationBarItem(icon: Icon(CupertinoIcons.news)),
+              BottomNavigationBarItem(icon: Icon(CupertinoIcons.money_euro)),
+              // BottomNavigationBarItem(
+              //     icon: Icon(CupertinoIcons.chat_bubble), label: "Chat"),
+              // BottomNavigationBarItem(
+              //     icon: Icon(CupertinoIcons.news), label: "News"),
+              // BottomNavigationBarItem(
+              //     icon: Icon(CupertinoIcons.money_euro), label: "Canoni")
             ],
           ),
           tabBuilder: (BuildContext context, int index) {
