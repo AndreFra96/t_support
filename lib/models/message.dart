@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 
 class Message {
   bool _incoming;
-  String _content;
-  List<RaisedButton> _buttons;
+  Widget _content;
   Timestamp _timestamp;
 
-  Message({bool incoming, String content, List<RaisedButton> buttons}) {
+  Message({bool incoming = false, @required content, Timestamp timestamp}) {
     _incoming = incoming;
     _content = content;
-    _buttons = buttons;
-    _timestamp = Timestamp.now();
+    if (timestamp == null) {
+      _timestamp = Timestamp.now();
+    } else {
+      _timestamp = timestamp;
+    }
   }
 
   bool isincoming() {
@@ -22,42 +24,34 @@ class Message {
     return !this._incoming;
   }
 
+  Widget content() {
+    return this._content;
+  }
+
+  Timestamp timestamp() {
+    return this._timestamp;
+  }
+
   Map<String, dynamic> toMap() {
     return {
+      'txt': _content, //TODO come memorizzo widget?
       'incoming': _incoming,
-      'txt': _content,
       'datetime': _timestamp.toDate()
     };
   }
 
-  Widget getDefaultWidget() {
-    List<RaisedButton> actualbuttons;
-    if (_buttons == null) {
-      actualbuttons = new List<RaisedButton>();
-    } else {
-      actualbuttons = _buttons;
+  Message fromMap(Map<String, dynamic> map) {
+    Message m = Message(content: "");
+    if (map.length == 3) {
+      m = Message(
+        content:
+            map['txt'] != null ? map['txt'] : "", //TODO come memorizzo widget?
+        incoming: map['incoming'] != null ? map['incoming'] : false,
+        timestamp: map['datetime'] != null
+            ? Timestamp.fromDate(map['datetime'])
+            : Timestamp.now(),
+      );
     }
-    return Align(
-      alignment: _incoming ? Alignment.topLeft : Alignment.topRight,
-      child: Column(
-        children: [
-          Card(
-            color: _incoming ? Colors.lightGreen[100] : Colors.lightBlue[100],
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                _content,
-              ),
-            ),
-          ),
-          for (RaisedButton actual in actualbuttons)
-            SizedBox(
-              width: 100,
-              height: 30,
-              child: actual,
-            ),
-        ],
-      ),
-    );
+    return m;
   }
 }
