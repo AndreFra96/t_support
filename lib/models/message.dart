@@ -6,7 +6,8 @@ class Message {
   Widget _content;
   Timestamp _timestamp;
 
-  Message({bool incoming = false, @required content, Timestamp timestamp}) {
+  Message(
+      {bool incoming = false, @required Widget content, Timestamp timestamp}) {
     _incoming = incoming;
     _content = content;
     if (timestamp == null) {
@@ -41,7 +42,7 @@ class Message {
   }
 
   Message fromMap(Map<String, dynamic> map) {
-    Message m = Message(content: "");
+    Message m = Message(content: Text(""));
     if (map.length == 3) {
       m = Message(
         content:

@@ -9,6 +9,7 @@ import 'package:support/pages/chat/faq_button.dart';
 import 'package:support/pages/chat/message_bubble.dart';
 import 'package:support/pages/chat/message_input_bar.dart';
 import 'package:support/pages/common/missingLocationAlert.dart';
+import 'package:support/services/firestore/firestore_service.dart';
 
 class Chat extends StatefulWidget {
   const Chat({
@@ -21,11 +22,20 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   TextEditingController messageInputController = new TextEditingController();
-
-  sendMessage() {
-    print(messageInputController.value.text);
-    messageInputController.clear();
-  }
+  ScrollController scrollController = new ScrollController();
+  List<Message> msg = [
+    Message(content: Text("questo è il primo messaggio"), incoming: true),
+    Message(content: Text("questo è il secondo messaggio"), incoming: false),
+    Message(content: Text("questo è il terzo messaggio"), incoming: true),
+    Message(content: Text("questo è il quarto messaggio"), incoming: true),
+    Message(content: Icon(Icons.face), incoming: false),
+    Message(
+        content: Image.asset(
+          "assets/gifs/clerk.gif",
+          fit: BoxFit.contain,
+        ),
+        incoming: false),
+  ];
 
   toggleFAQ() {
     print("toggle faq");
@@ -36,6 +46,24 @@ class _ChatState extends State<Chat> {
     print("WIDGET BUILTED");
     RcaUser user = Provider.of<RcaUser>(context);
     RcaLocation location = user == null ? null : user.activeLocation();
+
+    sendMessage() {
+      String text = messageInputController.value.text;
+      if (text.isNotEmpty) {
+        user.sendTextMessage(text);
+        setState(() {
+          msg.add(
+            Message(
+              content: Text(messageInputController.value.text),
+              timestamp: Timestamp.now(),
+            ),
+          );
+        });
+      }
+
+      messageInputController.clear();
+    }
+
     if (location == null) return MissingLocationAlert();
 
     return Padding(
@@ -46,7 +74,18 @@ class _ChatState extends State<Chat> {
           children: [
             Expanded(
               child: Stack(children: [
-                ChatBody(),
+                Container(
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    controller: scrollController,
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < msg.length; i++)
+                          MessageBubble(message: msg[i]),
+                      ],
+                    ),
+                  ),
+                ),
                 FAQButton(
                   onPressed: toggleFAQ,
                 ),

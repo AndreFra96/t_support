@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:support/models/message.dart';
 import 'package:support/models/rca_location.dart';
 import 'package:support/models/rca_user.dart';
@@ -117,14 +118,17 @@ class FirestoreService {
     return;
   }
 
-  static sendHello(RcaUser user) async {
-    DocumentReference doc = FirebaseFirestore.instance
-        .collection('conversations')
-        .doc(user.userCode);
+  static sendTextMessage(String userID, String messaggio) async {
+    DocumentReference doc =
+        FirebaseFirestore.instance.collection('conversations').doc(userID);
+    await doc.set({'user': userID});
 
-    await doc
-        .collection('messages')
-        .add(Message(incoming: true, content: "Ciao, " + user.ragsoc).toMap());
+    await doc.collection('messages').add({
+      'incoming': false,
+      'content': messaggio,
+      'timestamp': Timestamp.now().toDate()
+    });
+    return;
   }
 
   static Stream<QuerySnapshot> fetchMessages(RcaUser user) {

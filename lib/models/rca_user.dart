@@ -320,6 +320,10 @@ class RcaUser extends ChangeNotifier {
     return doc.exists;
   }
 
+  sendTextMessage(String text) {
+    FirestoreService.sendTextMessage(firebaseUser.user.uid, text);
+  }
+
   // Define that two user are equals if userCode is
   bool operator ==(other) {
     return (other is RcaUser &&
