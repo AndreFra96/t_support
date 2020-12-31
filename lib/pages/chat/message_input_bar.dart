@@ -9,7 +9,7 @@ class MessageInputBar extends StatelessWidget {
       {@required this.messageInputController, @required this.sendMessage});
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(top: 8.0),
       child: CupertinoTextField(
         controller: messageInputController,

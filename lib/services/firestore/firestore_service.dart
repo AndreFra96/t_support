@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:support/models/message.dart';
 import 'package:support/models/rca_location.dart';
 import 'package:support/models/rca_user.dart';
 
@@ -131,11 +129,12 @@ class FirestoreService {
     return;
   }
 
-  static Stream<QuerySnapshot> fetchMessages(RcaUser user) {
+  static Stream<QuerySnapshot> fetchMessages(String userid) {
     return FirebaseFirestore.instance
         .collection('conversations')
-        .doc(user.userCode)
+        .doc(userid)
         .collection('messages')
+        .orderBy('timestamp')
         .snapshots();
   }
 }

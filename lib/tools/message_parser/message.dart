@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Message {
+abstract class Message {
   bool _incoming;
   Widget _content;
   Timestamp _timestamp;
@@ -41,18 +41,18 @@ class Message {
     };
   }
 
-  Message fromMap(Map<String, dynamic> map) {
-    Message m = Message(content: Text(""));
-    if (map.length == 3) {
-      m = Message(
-        content:
-            map['txt'] != null ? map['txt'] : "", //TODO come memorizzo widget?
-        incoming: map['incoming'] != null ? map['incoming'] : false,
-        timestamp: map['datetime'] != null
-            ? Timestamp.fromDate(map['datetime'])
-            : Timestamp.now(),
-      );
-    }
-    return m;
-  }
+  // Message fromMap(Map<String, dynamic> map) {
+  //   Message m = Message(content: Text(""));
+  //   if (map.length == 3) {
+  //     m = Message(
+  //       content:
+  //           map['txt'] != null ? map['txt'] : "", //TODO come memorizzo widget?
+  //       incoming: map['incoming'] != null ? map['incoming'] : false,
+  //       timestamp: map['datetime'] != null
+  //           ? Timestamp.fromDate(map['datetime'])
+  //           : Timestamp.now(),
+  //     );
+  //   }
+  //   return m;
+  // }
 }

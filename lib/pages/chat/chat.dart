@@ -2,14 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:support/models/message.dart';
 import 'package:support/models/rca_location.dart';
 import 'package:support/models/rca_user.dart';
 import 'package:support/pages/chat/faq_button.dart';
 import 'package:support/pages/chat/message_bubble.dart';
 import 'package:support/pages/chat/message_input_bar.dart';
 import 'package:support/pages/common/missingLocationAlert.dart';
-import 'package:support/services/firestore/firestore_service.dart';
+import 'package:support/pages/common/splash.dart';
+import 'package:support/tools/message_parser/image_message.dart';
+import 'package:support/tools/message_parser/message.dart';
+import 'package:support/tools/message_parser/message_parser.dart';
+import 'package:support/tools/message_parser/text_message.dart';
 
 class Chat extends StatefulWidget {
   const Chat({
@@ -23,13 +26,14 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   TextEditingController messageInputController = new TextEditingController();
   ScrollController scrollController = new ScrollController();
+
   List<Message> msg = [
-    Message(content: Text("questo è il primo messaggio"), incoming: true),
-    Message(content: Text("questo è il secondo messaggio"), incoming: false),
-    Message(content: Text("questo è il terzo messaggio"), incoming: true),
-    Message(content: Text("questo è il quarto messaggio"), incoming: true),
-    Message(content: Icon(Icons.face), incoming: false),
-    Message(
+    TextMessage(content: Text("questo è il primo messaggio"), incoming: true),
+    TextMessage(
+        content: Text("questo è il secondo messaggio"), incoming: false),
+    TextMessage(content: Text("questo è il terzo messaggio"), incoming: true),
+    TextMessage(content: Text("questo è il quarto messaggio"), incoming: true),
+    ImageMessage(
         content: Image.asset(
           "assets/gifs/clerk.gif",
           fit: BoxFit.contain,
@@ -50,10 +54,10 @@ class _ChatState extends State<Chat> {
     sendMessage() {
       String text = messageInputController.value.text;
       if (text.isNotEmpty) {
-        user.sendTextMessage(text);
+        user.sendTextMessage(text); //Salva il messaggio in firestore
         setState(() {
           msg.add(
-            Message(
+            TextMessage(
               content: Text(messageInputController.value.text),
               timestamp: Timestamp.now(),
             ),
@@ -75,17 +79,31 @@ class _ChatState extends State<Chat> {
             Expanded(
               child: Stack(children: [
                 Container(
-                  child: SingleChildScrollView(
-                    reverse: true,
-                    controller: scrollController,
-                    child: Column(
-                      children: [
-                        for (int i = 0; i < msg.length; i++)
-                          MessageBubble(message: msg[i]),
-                      ],
-                    ),
-                  ),
-                ),
+                    child: StreamBuilder(
+                  stream: user.messageStream(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) return Splash();
+                    if (snapshot.hasError) return Text("error");
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(
+                        reverse: true,
+                        controller: scrollController,
+                        child: Column(
+                          children: [
+                            ...snapshot.data.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> data = document.data();
+                              Message m = MessageParser.fromMap(data);
+                              return MessageBubble(message: m);
+                            }),
+                          ],
+                        ),
+                      );
+                    }
+                    return Text("error");
+                  },
+                )),
                 FAQButton(
                   onPressed: toggleFAQ,
                 ),
@@ -95,50 +113,6 @@ class _ChatState extends State<Chat> {
               messageInputController: messageInputController,
               sendMessage: sendMessage,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ChatBody extends StatefulWidget {
-  const ChatBody({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _ChatBodyState createState() => _ChatBodyState();
-}
-
-class _ChatBodyState extends State<ChatBody> {
-  List<Message> msg = [
-    Message(content: Text("questo è il primo messaggio"), incoming: true),
-    Message(content: Text("questo è il secondo messaggio"), incoming: false),
-    Message(content: Text("questo è il terzo messaggio"), incoming: true),
-    Message(content: Text("questo è il quarto messaggio"), incoming: true),
-    Message(content: Icon(Icons.face), incoming: false),
-    Message(
-        content: Image.asset(
-          "assets/gifs/clerk.gif",
-          fit: BoxFit.contain,
-        ),
-        incoming: false),
-  ];
-
-  addMessage(String message) {
-    setState(() {
-      msg.add(Message(content: Text(message), timestamp: Timestamp.now()));
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (int i = 0; i < msg.length; i++) MessageBubble(message: msg[i]),
           ],
         ),
       ),
